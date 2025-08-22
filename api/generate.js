@@ -1,40 +1,43 @@
-// api/generate.js — серверная функция для Vercel (CommonJS)
-// Использует Hugging Face Inference API и модель SDXL base.
-// Нужна переменная окружения: HUGGINGFACE_TOKEN
+// api/generate.js
+import fetch from "node-fetch";
 
-module.exports = async function handler(req, res) {
+const MODEL = "stabilityai/stable-diffusion-xl-base-1.0";
+const HF_TOKEN = process.env.HUGGINGFACE_TOKEN; // Твой токен через переменные окружения
+
+export default async function handler(req, res) {
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ error: "Метод не поддерживается" });
+  }
+
+  const { prompt } = req.body;
+  if (!prompt) {
+    return res.status(400).json({ error: "Не передан prompt" });
   }
 
   try {
-    const { prompt, size = "768x768", negative = "" } = req.body || {};
-    if (!prompt || typeof prompt !== "string" || prompt.trim().length < 3) {
-      return res.status(400).json({ error: "Введите осмысленный prompt (минимум 3 символа)." });
-    }
-
-    // Разбор и валидация размера
-    const match = /^(\d+)x(\d+)$/.exec(size) || [];
-    let width = Number(match[1]) || 768;
-    let height = Number(match[2]) || 768;
-    const allowed = new Set([512, 768, 1024]);
-    if (!allowed.has(width) || !allowed.has(height)) {
-      width = 768; height = 768;
-    }
-
-    const HF_TOKEN = process.env.HUGGINGFACE_TOKEN;
-    if (!HF_TOKEN) {
-      return res.status(500).json({ error: "Не задан HUGGINGFACE_TOKEN в переменных окружения Vercel." });
-    }
-
-    const model = "Daniil-plotnikov/russian-vision-v5-beta-3";
-
-    const apiRes = await fetch(`https://api-inference.huggingface.co/models/${model}`, {
+    const response = await fetch(`https://api-inference.huggingface.co/models/${MODEL}`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${HF_TOKEN}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ inputs: prompt })
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      return res.status(response.status).json({ error: text });
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const base64 = buffer.toString("base64");
+
+    res.status(200).json({ image: `data:image/png;base64,${base64}` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         inputs: prompt,
