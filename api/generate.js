@@ -28,7 +28,7 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: "Не задан HUGGINGFACE_TOKEN в переменных окружения Vercel." });
     }
 
-    const model = "stablediffusionapi/stable-diffusion-xl-base-1.0";
+    const model = "Daniil-plotnikov/russian-vision-v5-beta-3";
 
     const apiRes = await fetch(`https://api-inference.huggingface.co/models/${model}`, {
       method: "POST",
