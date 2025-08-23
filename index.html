@@ -6,39 +6,109 @@
   <title>AI Генератор изображений</title>
   <style>
     :root { --gap: 12px; }
-    body { font-family: system-ui,-apple-system,Arial; margin: 0; padding: 24px; display: grid; place-items: start center; background:#fafafa; color:#111; }
-    .card { width: 100%; max-width: 780px; background:#fff; border:1px solid #e5e5e5; border-radius:16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,.04); }
-    h1 { margin: 0 0 10px; font-size: 22px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--gap); }
-    label { font-size: 14px; color:#444; display:block; margin-bottom:6px; }
-    textarea, input, select, button {
-      width: 100%; font-size: 16px; padding: 10px 12px; border:1px solid #ddd; border-radius:10px; box-sizing: border-box;
+    body {
+      font-family: system-ui, -apple-system, Arial;
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: start center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
     }
-    textarea { min-height: 90px; resize: vertical; }
-    button { cursor: pointer; background:#111; color:#fff; border:none; }
+    .card {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.2);
+      backdrop-filter: blur(12px);
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-size: 26px;
+      text-align: center;
+      color: #ffeb3b;
+    }
+    .row { display: grid; gap: var(--gap); }
+    label { font-size: 14px; margin-bottom: 6px; display: block; color: #fff; }
+    textarea, select, button {
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    textarea::placeholder { color: #ddd; }
+    select {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    button {
+      cursor: pointer;
+      background: #ff9800;
+      color: #fff;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover { background: #e68900; }
     button:disabled { opacity: .6; cursor: not-allowed; }
-    .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
-    .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
-    .preview img { max-width: 100%; border-radius:12px; display:block; }
-    .actions { display: flex; gap: var(--gap); margin-top: var(--gap); }
-    .error { color:#b00020; font-size: 14px; }
-    .hint { font-size: 12px; color:#666; margin-top:4px; }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--gap);
+    }
+    .prompt-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .prompt-box img {
+      width: 40px;
+      height: 40px;
+    }
+    .preview {
+      margin-top: 18px;
+      display: grid;
+      place-items: center;
+      min-height: 200px;
+      border: 2px dashed rgba(255,255,255,0.3);
+      border-radius: 12px;
+      background: rgba(0,0,0,0.2);
+    }
+    .preview img {
+      max-width: 100%;
+      border-radius: 12px;
+      display: block;
+    }
+    .actions {
+      display: flex;
+      gap: var(--gap);
+      margin-top: var(--gap);
+    }
+    .error { color: #ff4d4d; font-size: 14px; }
+    .hint { font-size: 12px; color: #eee; margin-top: 4px; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>AI-генератор изображений (SDXL)</h1>
+    <h1>🤖 AI-генератор изображений</h1>
 
     <div class="row">
       <div>
-        <label for="prompt">Описание (prompt)</label>
-        <textarea id="prompt" placeholder="Например: a cinematic portrait of a cyberpunk girl, neon lights, 4k, ultra detailed"></textarea>
-      </div>
-
-      <div>
-        <label for="negative">Что исключить (negative prompt) — необязательно</label>
-        <input id="negative" placeholder="Например: low quality, blurry, extra fingers" />
-        <div class="hint">Negative-prompt помогает убрать артефакты: размытие, лишние пальцы и т.п.</div>
+        <label for="prompt">Описание</label>
+        <div class="prompt-box">
+          <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png" alt="bot">
+          <textarea id="prompt" placeholder="Например: мистический лес в стиле киберпанк, неоновые огни"></textarea>
+        </div>
       </div>
 
       <div class="controls">
@@ -50,13 +120,6 @@
             <option value="1024x1024">1024×1024</option>
           </select>
         </div>
-
-        <div>
-          <label for="seed">Seed (опционально)</label>
-          <input id="seed" placeholder="оставь пустым для случайного" disabled />
-          <div class="hint">В этой версии seed не используется (HF API), оставь пустым.</div>
-        </div>
-
         <div style="align-self: end;">
           <button id="generate">Сгенерировать</button>
         </div>
@@ -65,7 +128,7 @@
       <div id="status" class="hint"></div>
 
       <div class="preview" id="preview">
-        <span style="color:#888">Здесь появится изображение</span>
+        <span style="color:#ccc">Здесь появится изображение</span>
       </div>
 
       <div class="actions" id="actions" style="display:none;">
@@ -79,4 +142,4 @@
 
   <script defer src="./script.js"></script>
 </body>
-              </html>
+</html>
