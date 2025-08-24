@@ -138,5 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  generateBtn.addEventListener("click", generate);
+  generateBtn.addEventListener("click", () => {
+  if (!consumeGuestCredit()) {
+    errorEl.textContent = "Ваш бесплатный лимит исчерпан. Зарегистрируйтесь, чтобы продолжить.";
+    return;
+  }
+  generate();
 });
