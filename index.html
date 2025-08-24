@@ -31,7 +31,15 @@
       width: 100%; font-size: 16px; padding: 10px 12px; border:1px solid #ddd; border-radius:10px; box-sizing: border-box;
     }
     textarea { min-height: 90px; resize: vertical; }
-    button { cursor: pointer; background:#111; color:#fff; border:none; }
+    button { cursor: pointer; background: linear-gradient(90deg, #6a11cb, #2575fc);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
     button:disabled { opacity: .6; cursor: not-allowed; }
     .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
     .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
