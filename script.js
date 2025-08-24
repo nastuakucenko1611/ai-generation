@@ -1,3 +1,55 @@
+// === Гостевой лимит через localStorage ===
+const GUEST_DAILY_LIMIT = 2;
+const LS_KEY = "guest_quota_v1"; // ключ в localStorage
+
+function todayISO() {
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  return d.toISOString().slice(0,10); // YYYY-MM-DD
+}
+
+function readGuestQuota() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return { used: 0, day: todayISO() };
+    const obj = JSON.parse(raw);
+    // если день сменился — обнуляем
+    if (obj.day !== todayISO()) return { used: 0, day: todayISO() };
+    return { used: Number(obj.used) || 0, day: obj.day };
+  } catch {
+    return { used: 0, day: todayISO() };
+  }
+}
+
+function writeGuestQuota(q) {
+  localStorage.setItem(LS_KEY, JSON.stringify(q));
+}
+
+function updateQuotaUI(q = readGuestQuota()) {
+  const quotaText = document.getElementById("quotaText");
+  const quotaMsg = document.getElementById("quotaMsg");
+  if (quotaText) quotaText.textContent = `${Math.max(GUEST_DAILY_LIMIT - q.used, 0)} из ${GUEST_DAILY_LIMIT}`;
+  if (quotaMsg) quotaMsg.textContent = q.used >= GUEST_DAILY_LIMIT ? "Лимит для гостей исчерпан — войдите, чтобы продолжить" : "";
+}
+
+/**
+ * Пытаемся «списать» одну бесплатную попытку гостя.
+ * Возвращает true — можно генерировать; false — лимит исчерпан.
+ */
+function consumeGuestCredit() {
+  let q = readGuestQuota();
+  if (q.used >= GUEST_DAILY_LIMIT) {
+    updateQuotaUI(q);
+    return false;
+  }
+  q.used += 1;
+  writeGuestQuota(q);
+  updateQuotaUI(q);
+  return true;
+}
+
+// при загрузке страницы — привести счётчик к актуальному дню
+window.addEventListener("DOMContentLoaded", () => updateQuotaUI());
 document.addEventListener("DOMContentLoaded", () => {
   const $ = (id) => document.getElementById(id);
   const promptEl = $("prompt");
