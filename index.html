@@ -23,6 +23,23 @@
     .actions { display: flex; gap: var(--gap); margin-top: var(--gap); }
     .error { color:#b00020; font-size: 14px; }
     .hint { font-size: 12px; color:#666; margin-top:4px; }
+    @media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr; /* всё в одну колонку */
+  }
+
+  button {
+    width: 100%;
+  }
+               }
   </style>
 </head>
 <body>
