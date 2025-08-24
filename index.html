@@ -15,8 +15,13 @@
     .row { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--gap); }
     label { font-size: 14px; color:#444; display:block; margin-bottom:6px; }
     textarea, input, select, button {
-      width: 100%; font-size: 16px; padding: 10px 12px; border:1px solid #ddd; border-radius:10px; box-sizing: border-box;
-    }
+      width: 100%; font-size: 16px; box-sizing: border-box; 
+  background-color: #87CEEB; /* небесно-голубой */
+  border: 2px solid #4682B4; /* можно оставить красивую рамку */
+  border-radius: 10px; /* сглаженные углы */
+  padding: 10px;
+  color: #000; /* текст внутри чёрный */
+      }
     textarea { min-height: 90px; resize: vertical; }
     button { cursor: pointer; background:#111; color:#fff; border:none; }
     button:disabled { opacity: .6; cursor: not-allowed; }
