@@ -23,7 +23,26 @@
   color: #000; /* текст внутри чёрный */
       }
     textarea { min-height: 90px; resize: vertical; }
-    button { cursor: pointer; background:#111; color:#fff; border:none; }
+    button {
+  background-color: #8B0000; /* тёмно-красный */
+  color: #fff; /* белый текст */
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+
+  /* необычная форма — например «капсула» */
+  border-radius: 50px; 
+
+  /* можно добавить тень для красоты */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05); /* при наведении увеличивается */
+  background-color: #B22222; /* чуть ярче красный */
+}
     button:disabled { opacity: .6; cursor: not-allowed; }
     .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
     .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
