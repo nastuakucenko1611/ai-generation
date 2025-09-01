@@ -1,100 +1,86 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '{1381312643995189}',
-      cookie     : true,
-      xfbml      : true,
-      version    : '{api-version}'
-    });
-      
-    FB.AppEvents.logPageView();   
-      
-  };
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Генератор изображений</title>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '{1381312643995189}',
+        cookie     : true,
+        xfbml      : true,
+        version    : '{api-version}'
+      });
+      FB.AppEvents.logPageView();
+    };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
-
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AI Генератор изображений</title>
-<style>
-  :root { --gap: 12px; }
-  body { font-family: system-ui,-apple-system,Arial; margin: 0; padding: 24px; display: grid; place-items: start center; 
-background-color: #800080; /* фиолетовый */
-font-family: Arial, sans-serif;
-  }
-  .card { width: 100%; max-width: 780px; background:#fff; border:1px solid #e5e5e5; border-radius:16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,.04); }
-  h1 { margin: 0 0 10px; font-size: 22px; }
-  .row { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--gap); }
-  label { font-size: 14px; color:#444; display:block; margin-bottom:6px; }
-  textarea, input, select, button {
-    width: 100%; font-size: 16px; box-sizing: border-box; 
-background-color: #87CEEB; /* небесно-голубой */
-border: 2px solid #4682B4; /* можно оставить красивую рамку */
-border-radius: 10px; /* сглаженные углы */
-padding: 10px;
-color: #000; /* текст внутри чёрный */
-  }
-  textarea { min-height: 90px; resize: vertical; }
-  button {
-background-color: #8B0000; /* тёмно-красный */
-color: #fff; /* белый текст */
-padding: 12px 24px;
-border: none;
-cursor: pointer;
-font-size: 16px;
-border-radius: 50px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-transition: transform 0.2s ease;
-  }
-  button:hover {
-    transform: scale(1.05);
-    background-color: #B22222;
-  }
-  button:disabled { opacity: .6; cursor: not-allowed; }
-  .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
-  .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
-  .preview img { max-width: 100%; border-radius:12px; display:block; }
-  .actions { display: flex; gap: var(--gap); margin-top: var(--gap); }
-  .error { color:#b00020; font-size: 14px; }
-  .hint { font-size: 12px; color:#666; margin-top:4px; }
-  .login-btn {
-    background-color: #FF8C00;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 12px;
-    text-decoration: none;
-    display: inline-block;
-  }
-  .login-btn:hover { background-color: #FF7000; }
-  @media (max-width: 600px) {
-body { padding: 12px; }
-.controls { grid-template-columns: 1fr; }
-button { width: 100%; }
-  }
-</style>
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <style>
+    :root { --gap: 12px; }
+    body { 
+      font-family: system-ui,-apple-system,Arial; 
+      margin: 0; 
+      padding: 24px; 
+      display: grid; 
+      place-items: start center; 
+      background-color: #800080; /* фиолетовый */
+      color: #000; /* текст чёрный */
+    }
+    label, .hint, .error, span, strong {
+      color: #000; /* текст чёрный */
+    }
+    .card { width: 100%; max-width: 780px; background:#fff; border:1px solid #e5e5e5; border-radius:16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 10px; font-size: 22px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--gap); }
+    textarea, input, select, button {
+      width: 100%; font-size: 16px; box-sizing: border-box; 
+      background-color: #87CEEB; /* небесно-голубой */
+      border: 2px solid #4682B4; /* красивая рамка */
+      border-radius: 10px;
+      padding: 10px;
+      color: #000; /* текст чёрный */
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    button {
+      background-color: #8B0000; /* тёмно-красный */
+      color: #fff; /* белый текст на кнопке */
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 50px; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background-color: #B22222; /* чуть ярче */
+    }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
+    .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
+    .preview img { max-width: 100%; border-radius:12px; display:block; }
+    .actions { display: flex; gap: var(--gap); margin-top: var(--gap); }
+    .error { color:#b00020; font-size: 14px; }
+    .hint { font-size: 12px; color:#666; margin-top:4px; }
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .card { padding: 16px; }
+      .controls { grid-template-columns: 1fr; }
+      button { width: 100%; }
+    }
+  </style>
 </head>
-
 <body>
-
-  <!-- Кнопка для входа -->
-  <a class="login-btn" href="auth.html">Войти</a>
-
-  <div id="quotaBar" style="display:flex;gap:10px;align-items:center;margin:8px 0 6px 0;font-size:14px;color:#555;">
+  <div id="quotaBar" style="display:flex;gap:10px;align-items:center;margin:8px 0 6px 0;font-size:14px;">
     <span>Бесплатные генерации (гость):</span>
     <strong id="quotaText">2 из 2</strong>
     <span id="quotaMsg" style="margin-left:auto;color:#b00020;"></span>
@@ -145,6 +131,13 @@ button { width: 100%; }
     </div>
 
     <div class="error" id="error"></div>
+
+    <!-- Кнопка входа -->
+    <div style="margin-top:20px;">
+      <a href="auth.html">
+        <button style="width:100%; background-color:#0066cc;">Войти / Зарегистрироваться</button>
+      </a>
+    </div>
   </div>
 
   <script defer src="./script.js"></script>
