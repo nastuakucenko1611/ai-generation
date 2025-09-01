@@ -23,157 +23,128 @@
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 </script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AI Генератор изображений</title>
-  <style>
-    :root { --gap: 12px; }
-    body { font-family: system-ui,-apple-system,Arial; margin: 0; padding: 24px; display: grid; place-items: start center; 
-  background-color: #800080; /* фиолетовый */
-  font-family: Arial, sans-serif;
-    }
-    .card { width: 100%; max-width: 780px; background:#fff; border:1px solid #e5e5e5; border-radius:16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,.04); }
-    h1 { margin: 0 0 10px; font-size: 22px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--gap); }
-    label { font-size: 14px; color:#444; display:block; margin-bottom:6px; }
-    textarea, input, select, button {
-      width: 100%; font-size: 16px; box-sizing: border-box; 
-  background-color: #87CEEB; /* небесно-голубой */
-  border: 2px solid #4682B4; /* можно оставить красивую рамку */
-  border-radius: 10px; /* сглаженные углы */
-  padding: 10px;
-  color: #000; /* текст внутри чёрный */
-      }
-    textarea { min-height: 90px; resize: vertical; }
-    button {
-  background-color: #8B0000; /* тёмно-красный */
-  color: #fff; /* белый текст */
-  padding: 12px 24px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
 
-  /* необычная форма — например «капсула» */
-  border-radius: 50px; 
-
-  /* можно добавить тень для красоты */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease;
-}
-
-button:hover {
-  transform: scale(1.05); /* при наведении увеличивается */
-  background-color: #B22222; /* чуть ярче красный */
-}
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
-    .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
-    .preview img { max-width: 100%; border-radius:12px; display:block; }
-    .actions { display: flex; gap: var(--gap); margin-top: var(--gap); }
-    .error { color:#b00020; font-size: 14px; }
-    .hint { font-size: 12px; color:#666; margin-top:4px; }
-    @media (max-width: 600px) {
-  body {
-    padding: 12px;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Генератор изображений</title>
+<style>
+  :root { --gap: 12px; }
+  body { font-family: system-ui,-apple-system,Arial; margin: 0; padding: 24px; display: grid; place-items: start center; 
+background-color: #800080; /* фиолетовый */
+font-family: Arial, sans-serif;
   }
-
-  .card {
-    padding: 16px;
+  .card { width: 100%; max-width: 780px; background:#fff; border:1px solid #e5e5e5; border-radius:16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,.04); }
+  h1 { margin: 0 0 10px; font-size: 22px; }
+  .row { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--gap); }
+  label { font-size: 14px; color:#444; display:block; margin-bottom:6px; }
+  textarea, input, select, button {
+    width: 100%; font-size: 16px; box-sizing: border-box; 
+background-color: #87CEEB; /* небесно-голубой */
+border: 2px solid #4682B4; /* можно оставить красивую рамку */
+border-radius: 10px; /* сглаженные углы */
+padding: 10px;
+color: #000; /* текст внутри чёрный */
   }
-
-  .controls {
-    grid-template-columns: 1fr; /* всё в одну колонку */
-  }
-
+  textarea { min-height: 90px; resize: vertical; }
   button {
-    width: 100%;
+background-color: #8B0000; /* тёмно-красный */
+color: #fff; /* белый текст */
+padding: 12px 24px;
+border: none;
+cursor: pointer;
+font-size: 16px;
+border-radius: 50px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+transition: transform 0.2s ease;
   }
-               }
-  </style>
+  button:hover {
+    transform: scale(1.05);
+    background-color: #B22222;
+  }
+  button:disabled { opacity: .6; cursor: not-allowed; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--gap); }
+  .preview { margin-top: 18px; display: grid; place-items: center; min-height: 200px; border:1px dashed #ddd; border-radius:12px; background:#fff; }
+  .preview img { max-width: 100%; border-radius:12px; display:block; }
+  .actions { display: flex; gap: var(--gap); margin-top: var(--gap); }
+  .error { color:#b00020; font-size: 14px; }
+  .hint { font-size: 12px; color:#666; margin-top:4px; }
+  .login-btn {
+    background-color: #FF8C00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .login-btn:hover { background-color: #FF7000; }
+  @media (max-width: 600px) {
+body { padding: 12px; }
+.controls { grid-template-columns: 1fr; }
+button { width: 100%; }
+  }
+</style>
 </head>
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAkK-i_PaVsXeyenkbzcMu3D2pKuHjgFXA",
-    authDomain: "my-ai-app-91ad0.firebaseapp.com",
-    projectId: "my-ai-app-91ad0",
-    storageBucket: "my-ai-app-91ad0.firebasestorage.app",
-    messagingSenderId: "485751434759",
-    appId: "1:485751434759:web:3e8d2db4c97e067ace44a2",
-    measurementId: "G-2E6Q2HY5FL"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 <body>
-  <div class="card">
-    <h1>AI-генератор изображений (SDXL)</h1>
 
-    <div id="quotaBar" style="display:flex;gap:10px;align-items:center;margin:8px 0 6px 0;font-size:14px;color:#555;">
-  <span>Бесплатные генерации (гость):</span>
-  <strong id="quotaText">2 из 2</strong>
-  <span id="quotaMsg" style="margin-left:auto;color:#b00020;"></span>
+  <!-- Кнопка для входа -->
+  <a class="login-btn" href="auth.html">Войти</a>
+
+  <div id="quotaBar" style="display:flex;gap:10px;align-items:center;margin:8px 0 6px 0;font-size:14px;color:#555;">
+    <span>Бесплатные генерации (гость):</span>
+    <strong id="quotaText">2 из 2</strong>
+    <span id="quotaMsg" style="margin-left:auto;color:#b00020;"></span>
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="prompt">Описание (prompt)</label>
+      <textarea id="prompt" placeholder="Например: a cinematic portrait of a cyberpunk girl, neon lights, 4k, ultra detailed"></textarea>
     </div>
 
-    <div class="row">
-      <div>
-        <label for="prompt">Описание (prompt)</label>
-        <textarea id="prompt" placeholder="Например: a cinematic portrait of a cyberpunk girl, neon lights, 4k, ultra detailed"></textarea>
-      </div>
-
-      <div>
-        <label for="negative">Что исключить (negative prompt) — необязательно</label>
-        <input id="negative" placeholder="Например: low quality, blurry, extra fingers" />
-        <div class="hint">Negative-prompt помогает убрать артефакты: размытие, лишние пальцы и т.п.</div>
-      </div>
-
-      <div class="controls">
-        <div>
-          <label for="size">Размер</label>
-          <select id="size">
-            <option value="512x512">512×512</option>
-            <option value="768x768" selected>768×768</option>
-            <option value="1024x1024">1024×1024</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="seed">Seed (опционально)</label>
-          <input id="seed" placeholder="оставь пустым для случайного" disabled />
-          <div class="hint">В этой версии seed не используется (HF API), оставь пустым.</div>
-        </div>
-
-        <div style="align-self: end;">
-          <button id="generate">Сгенерировать</button>
-
-          
-          <!-- Кнопка для входа -->
-<button id="googleLoginBtn">Войти через Google</button>
-        </div>
-      </div>
-
-      <div id="status" class="hint"></div>
-
-      <div class="preview" id="preview">
-        <span style="color:#888">Здесь появится изображение</span>
-      </div>
-
-      <div class="actions" id="actions" style="display:none;">
-        <button id="download">Скачать</button>
-        <button id="openNew">Открыть в новой вкладке</button>
-      </div>
-
-      <div class="error" id="error"></div>
+    <div>
+      <label for="negative">Что исключить (negative prompt) — необязательно</label>
+      <input id="negative" placeholder="Например: low quality, blurry, extra fingers" />
+      <div class="hint">Negative-prompt помогает убрать артефакты: размытие, лишние пальцы и т.п.</div>
     </div>
+
+    <div class="controls">
+      <div>
+        <label for="size">Размер</label>
+        <select id="size">
+          <option value="512x512">512×512</option>
+          <option value="768x768" selected>768×768</option>
+          <option value="1024x1024">1024×1024</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="seed">Seed (опционально)</label>
+        <input id="seed" placeholder="оставь пустым для случайного" disabled />
+        <div class="hint">В этой версии seed не используется (HF API), оставь пустым.</div>
+      </div>
+
+      <div style="align-self: end;">
+        <button id="generate">Сгенерировать</button>
+      </div>
+    </div>
+
+    <div id="status" class="hint"></div>
+
+    <div class="preview" id="preview">
+      <span style="color:#888">Здесь появится изображение</span>
+    </div>
+
+    <div class="actions" id="actions" style="display:none;">
+      <button id="download">Скачать</button>
+      <button id="openNew">Открыть в новой вкладке</button>
+    </div>
+
+    <div class="error" id="error"></div>
   </div>
 
   <script defer src="./script.js"></script>
